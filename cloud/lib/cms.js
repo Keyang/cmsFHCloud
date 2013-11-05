@@ -5,8 +5,7 @@
 module.exports = {
   getAppStructure: getAppStructure,
   getArticle: getArticle,
-  getCmsUrl: getCmsUrl,
-  init: init
+  getCmsUrl: getCmsUrl
 };
 
 var request = require('request'),

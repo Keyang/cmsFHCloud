@@ -11,13 +11,6 @@ var env = require('./lib/env'),
 // Check env
 env.init();
 
-// Initialise CMS and export functionality if possible
-cms.init(function(err) {
-  if(err) {
-    log.warn('Failed to start CMS component: ');
-    log.warn(err);
-  }
-
-  exports.getCmsArticle = cms.getCmsArticle;
-  exports.getAppStructure = cms.getAppStructure;
-});
+// Public calls
+exports.getCmsArticle = cms.getCmsArticle;
+exports.getAppStructure = cms.getAppStructure;
