@@ -12,5 +12,5 @@ var env = require('./lib/env'),
 env.init();
 
 // Public calls
-exports.getCmsArticle = cms.getCmsArticle;
+exports.getArticle = cms.getArticle;
 exports.getAppStructure = cms.getAppStructure;

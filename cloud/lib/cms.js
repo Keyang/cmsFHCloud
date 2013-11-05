@@ -4,6 +4,7 @@
 
 module.exports = {
   getAppStructure: getAppStructure,
+  getContentExtra: getContentExtra,
   getArticle: getArticle,
   getCmsUrl: getCmsUrl
 };
@@ -21,7 +22,46 @@ var request = require('request'),
  */
 
 function getCmsUrl() {
-  return url.resolve(env.get('CMS_URL'), env.get('CMS_PATH'));
+  return env.get('CMS_URL');
+}
+
+
+/**
+ * Generic CMS get request
+ * @param {String}
+ * @param {Callback}
+ */
+function doRequest(path, callback) {
+  request.get(getCmsUrl() + path, function(err, res, body) {
+    if (err || (res && res.statusCode != 200)) {
+      return utils.communicationError(err, res, body, callback);
+    }
+
+    return utils.sendResponse(body, callback);
+  }); 
+}
+
+
+/**
+ * Get extra content types from CMS
+ * @param {Object}
+ * @param {Function}
+ */
+function getContentExtra(params, callback) {
+  utils.verifyParams(['cat', 'type', 'template', 'extraId'], function(err) {
+    if (err) {
+      return callback(err, null);
+    }
+
+    var tpl = '/cms/articles/loadExtra/:cat/:type/:template/:extraId';
+    var path = tpl
+      .replace(':cat', params['cat'])
+      .replace(':type', params['type'])
+      .replace(':template', params['template'])
+      .replace(':extraId', params['extraId']);
+
+    return doRequest(path, callback);
+  });
 }
 
 
@@ -37,14 +77,8 @@ function getArticle(params, callback) {
       return callback(err, null);
     }
 
-    var url = getCmsUrl() + '/articles/load/' + params['contentId'];
-    request.get(url, function(err, res, body) {
-      if (err || (res && res.statusCode != 200)) {
-        return utils.communicationError(err, res, body, callback);
-      }
-
-      return utils.sendResponse(body, callback);
-    });
+    var path = '/cms/articles/load/' + params['contentId'];
+    return doRequest(path, callback);
   });
 }
 
@@ -61,13 +95,7 @@ function getAppStructure(params, callback) {
       return callback(err, null);
     }
 
-    var url = getCmsUrl() + '/apps/structure/' + params['alias'];
-    request.get(url, function(err, res, body) {
-      if (err || (res && res.statusCode != 200)) {
-        return utils.communicationError(err, res, body, callback);
-      }
-
-      return utils.sendResponse(body, callback);
-    })
+    var path = '/cms/apps/structure/' + params['alias'];
+    return doRequest(path, callback);
   });
 }
