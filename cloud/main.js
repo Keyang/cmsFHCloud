@@ -14,3 +14,4 @@ env.init();
 // Public calls
 exports.getArticle = cms.getArticle;
 exports.getAppStructure = cms.getAppStructure;
+exports.getContentExtra = cms.getContentExtra;

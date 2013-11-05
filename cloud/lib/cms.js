@@ -48,17 +48,16 @@ function doRequest(path, callback) {
  * @param {Function}
  */
 function getContentExtra(params, callback) {
-  utils.verifyParams(['cat', 'type', 'template', 'extraId'], function(err) {
+  var pathKeys = ['cat', 'type', 'template', 'extraId'];
+  utils.verifyParams(pathKeys, params, function(err) {
     if (err) {
       return callback(err, null);
     }
 
-    var tpl = '/cms/articles/loadExtra/:cat/:type/:template/:extraId';
-    var path = tpl
-      .replace(':cat', params['cat'])
-      .replace(':type', params['type'])
-      .replace(':template', params['template'])
-      .replace(':extraId', params['extraId']);
+    var path = '/cms/articles/loadExtra/:cat/:type/:template/:extraId';
+    pathKeys.forEach(function(k) {
+      path = path.replace(':' + k, params[k]);
+    });
 
     return doRequest(path, callback);
   });
