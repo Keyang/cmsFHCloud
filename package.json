@@ -1,6 +1,6 @@
 {
   "name": "fh-cms-cloud",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies" : {
     "request": "2.27.0",
     "async": "0.2.9"
